@@ -83,11 +83,11 @@ def accumulate(accumulator, sample_file_names, sample_brief_names, sample_index,
         A, C, G, T = row[c_A], row[c_C], row[c_G], row[c_T]
 
         # Compute derived columns.
-        genome_id = site_id.split("_", 1)[0]
-        contig_id = site_id.split("|", 1)[0]
+        genome_id = site_id.split("|", 1)[0]
+        contig_id = site_id.split("|")[1]
         nz_allele_freq = nz_allele_count / depth
 
-        site_ratio = depth / contig_stats[sample_name][contig_id][cs_coverage]
+        site_ratio = depth / contig_stats[sample_name][f"{genome_id}_{contig_id}"][cs_coverage]
         genome_coverage = genome_stats[sample_name][genome_id][gs_coverage]
 
         # Filter.
@@ -139,7 +139,7 @@ def filter2(accumulator, sample_list_file, sample_brief_names):
                     minor_allele = alleles_above_cutoff[-1][1]  # for mono-allelic sites, same as major allele
                     out_sites.write(f"{site_id}\t{A}\t{C}\t{G}\t{T}\t{sample_count}\t")
                     major_allele_freqs_by_sample = "\t".join(
-                        "{:.3f}".format(0.0 if allele == 'N' else (freq if allele==major_allele else 1.0 - freq))
+                        "{:.3f}".format(-1.0 if allele == 'N' else (freq if allele==major_allele else 1.0 - freq))
                         for allele, freq in site_info[5:])
                     out_sites.write(major_allele + "\t" + minor_allele + "\t" + major_allele_freqs_by_sample + "\n")
 

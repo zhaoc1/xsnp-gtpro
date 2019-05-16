@@ -21,8 +21,8 @@ def process(sample_gtpro_path, num_threads, thread_id, contig_accumulator, genom
     sites = {}
     sites_count = 0
 
-    table_iterator = parse_gtpro_table(tsv_rows(sample_gtpro_path), param.sample_gtpro_schema)
-    #table_iterator = parse_table(tsv_rows_slice(sample_gtpro_path, num_threads, thread_id), param.sample_pileup_schema)
+    #table_iterator = parse_gtpro_table(tsv_rows(sample_gtpro_path), param.sample_gtpro_schema)
+    table_iterator = parse_gtpro_table(tsv_rows_slice(sample_gtpro_path, num_threads, thread_id), param.sample_gtpro_schema)
     columns = next(table_iterator)
 
     # Add derived columns
