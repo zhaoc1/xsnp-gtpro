@@ -78,13 +78,13 @@ def process(sample_gtpro_path, num_threads, thread_id, contig_accumulator, genom
         # Index and aggregate rows
         sites_count += 1
 
-        acc1 = contig_acc.get(f"{genome_id}_{contig_id}")
+        acc1 = contig_acc.get(contig_id)
         if acc1:
             acc1[oc_contig_depth] += depth
             acc1[oc_contig_covered_bases] += 1
         else:
             acc1 = [depth, 1]
-            contig_acc[f"{genome_id}_{contig_id}"] = acc1
+            contig_acc[contig_id] = acc1
 
         acc2 = genome_acc.get(genome_id)
         if acc2:
@@ -166,13 +166,13 @@ def process_worker(args):
     output_path_genome_stats = f"banded/band{thread_id}.genome_stats.tsv"
 
     with open(output_path_contig_stats, "w") as o2:
-        o2.write("sample_name\tcontig_id\tgenome_id\tcontig_total_depth\tcontig_covered_bases\n")
+        o2.write("sample_name\tgenome_id\tcontig_id\tcontig_total_depth\tcontig_covered_bases\n")
         for sample_name, contig_acc in contig_accumulator.items():
             for contig_id, contig_info in contig_acc.items():
                 contig_total_depth, contig_covered_bases = contig_info
-                genome_id = contig_id.split("_", 1)[0]
-                o2.write(f"{sample_name}\t{contig_id}\t{genome_id}\t{contig_total_depth}\t{contig_covered_bases}\n")
-
+                #genome_id = contig_id.split("_", 1)[0]
+                genome_id = param.CONTIGS[contig_id]
+                o2.write(f"{sample_name}\t{genome_id}\t{contig_id}\t{contig_total_depth}\t{contig_covered_bases}\n")
     with open(output_path_genome_stats, "w") as o3:
         o3.write("sample_name\tgenome_id\tgenome_total_depth\tgenome_covered_bases\n")
         for sample_name, genome_acc in genome_accumulator.items():
