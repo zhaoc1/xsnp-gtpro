@@ -84,7 +84,6 @@ def parse_gtpro_table(rows, schema={}):
         assert len(headers) == len(values)
         yield [f(v) for f,v in zip(functions, values)]
 
-
 def tsv_rows(path):
     # TODO:  Support s3 and compressed files.
     with open(path, "r") as stream:
