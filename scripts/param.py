@@ -73,11 +73,3 @@ sample_pileup_schema_banded_v2 = {
     "nz_allele": (str,),
     "nz_allele_count": (int,)
 }
-
-## 20190709: Add global dict mapping_contig_genome
-CONTIGS = {}
-with open("mapping_contig_genome.tsv") as f:
-    for line in f:
-        genome_id = line.rstrip('\n').split('\t')[0]
-        contig_id = line.rstrip('\n').split('\t')[1]
-        CONTIGS[contig_id] = str(genome_id)
